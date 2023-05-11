@@ -1,3 +1,4 @@
+import 'package:analytics_plugin/analytics/facebook/facebook_events.dart';
 import 'package:analytics_plugin/analytics/firebase/firebase_events.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
 
@@ -18,20 +19,23 @@ class AnalyticsManager{
       FirebaseEvent.instance.setProductListViewEvent(list);
    }
 
-    logItemViewEvent(ItemModel itemModel)  {
-      FirebaseEvent.instance.logItemViewEvent(itemModel);
+    logItemViewEvent(ItemEventModel eventModel)  {
+      FBEventManager.instance.viewItemEvent(eventModel);
+      FirebaseEvent.instance.logItemViewEvent(eventModel.itemModel);
    }
 
     logAddToCart(ItemModel itemModel) {
       FirebaseEvent.instance.logAddToCart(itemModel);
+      FBEventManager.instance.addToCart(itemModel);
    }
 
     logRemoveFromCart(ItemModel itemModel) {
       FirebaseEvent.instance.logRemoveFromCart(itemModel);
    }
 
-    logAddToWishlist(ItemModel itemModel) {
-      FirebaseEvent.instance.logAddToWishlist(itemModel);
+    logAddToWishlist(ItemEventModel eventModel) {
+      FirebaseEvent.instance.logAddToWishlist(eventModel.itemModel);
+      FBEventManager.instance.addToWishlist(eventModel);
    }
 
 
@@ -40,6 +44,7 @@ class AnalyticsManager{
    }
 
     logBeginCheckout(CartModel cartModel) {
+      FBEventManager.instance.initiateCheckout(cartModel);
       FirebaseEvent.instance.logBeginCheckout(cartModel);
    }
 
@@ -49,6 +54,7 @@ class AnalyticsManager{
    }
 
     logPurchase(CartModel cartModel) {
+      FBEventManager.instance.purchaseEvents(cartModel);
       FirebaseEvent.instance.logPurchase(cartModel);
    }
 
