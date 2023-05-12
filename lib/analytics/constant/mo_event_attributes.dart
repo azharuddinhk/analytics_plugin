@@ -1,5 +1,6 @@
 class MoEventAttributes {
   MoEventAttributes._();
+  static const currencyValue = "INR";
   static const items = "items";
   static const item_brand = "item_brand";
   static const item_category = "item_category";
@@ -13,4 +14,9 @@ class MoEventAttributes {
   static const shipping = "shipping";
   static const transaction_id = "transaction_id";
   static const shippingCharge = "shipping_charge";
+
+  static const platform = "platform";
+  static const version = "version";
+  static const osVersion = "osVersion";
+  static const deviceName = "deviceName";
 }
