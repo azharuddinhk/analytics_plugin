@@ -64,7 +64,7 @@ class MoEngageManager {
     }
   }
 
-  setProductListViewEvent(List<ItemModel> listItems) async {
+  setProductListViewEvent(List<AnalyticsItemModel> listItems) async {
     if (_moEngagePlugin != null) {
       List<String> items = getItemsFromList(listItems);
       MoEProperties properties = MoEProperties();
@@ -73,47 +73,47 @@ class MoEngageManager {
     }
   }
 
-  logSelectItemViewEvent(ItemModel data) {
+  logSelectItemViewEvent(AnalyticsItemModel data) {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.SELECT_ITEM, getAnalyticsEventItem(data));
     }
   }
 
-  logItemViewEvent(ItemModel data) {
+  logItemViewEvent(AnalyticsItemModel data) {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.VIEW_ITEM, getAnalyticsEventItem(data));
     }
   }
 
-  logAddToCart(ItemModel data) async {
+  logAddToCart(AnalyticsItemModel data) async {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.ADD_TO_CART,
           getAnalyticsEventItemWithQuantity(data, data.quantity ?? 1));
     }
   }
 
-  logAddToWishlist(ItemModel data) async {
+  logAddToWishlist(AnalyticsItemModel data) async {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.ADD_TO_WISHLIST,
           getAnalyticsEventItemWithQuantity(data, data.quantity ?? 1));
     }
   }
 
-  logRemoveFromCart(ItemModel data) async {
+  logRemoveFromCart(AnalyticsItemModel data) async {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.REMOVE_FROM_CART,
           getAnalyticsEventItemWithQuantity(data, data.quantity ?? 1));
     }
   }
 
-  logAddToWishlistVariant(ItemModel data, int quantity) async {
+  logAddToWishlistVariant(AnalyticsItemModel data, int quantity) async {
     if (_moEngagePlugin != null) {
       trackEvents(MOEventNames.ADD_TO_WISHLIST,
           getAnalyticsEventItemWithQuantity(data, quantity));
     }
   }
 
-  logViewCart(CartModel cartModel) {
+  logViewCart(AnalyticsCartModel cartModel) {
     if (_moEngagePlugin != null && cartModel.items != null) {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
@@ -125,7 +125,7 @@ class MoEngageManager {
     }
   }
 
-  logBeginCheckout(CartModel cartModel) {
+  logBeginCheckout(AnalyticsCartModel cartModel) {
     if (_moEngagePlugin != null && cartModel.items != null) {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
@@ -138,7 +138,7 @@ class MoEngageManager {
     }
   }
 
-  logAddShippingInfo(CartModel cartModel) async {
+  logAddShippingInfo(AnalyticsCartModel cartModel) async {
     if (_moEngagePlugin != null && cartModel.items != null) {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
@@ -153,7 +153,7 @@ class MoEngageManager {
     }
   }
 
-  logPurchase(CartModel cartModel) {
+  logPurchase(AnalyticsCartModel cartModel) {
     if (_moEngagePlugin != null && cartModel.items != null) {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
@@ -171,7 +171,7 @@ class MoEngageManager {
 }
 
 extension MoEngageEventHelper on MoEngageManager {
-  MoEProperties getAnalyticsEventItem(ItemModel product) {
+  MoEProperties getAnalyticsEventItem(AnalyticsItemModel product) {
     MoEProperties params = MoEProperties();
     params
         .addAttribute(MoEventAttributes.item_id, "${product.id ?? 0}")
@@ -184,7 +184,7 @@ extension MoEngageEventHelper on MoEngageManager {
   }
 
   MoEProperties getAnalyticsEventItemWithQuantity(
-      ItemModel product, int quantity) {
+      AnalyticsItemModel product, int quantity) {
     MoEProperties params = MoEProperties();
     params
         .addAttribute(MoEventAttributes.item_id, "${product.id ?? 0}")
@@ -197,7 +197,7 @@ extension MoEngageEventHelper on MoEngageManager {
     return params;
   }
 
-  List<String> getItemsFromList(List<ItemModel> listItems) {
+  List<String> getItemsFromList(List<AnalyticsItemModel> listItems) {
     List<String> items = [];
     listItems.forEach((element) {
       items.add("${element.name ?? ""}||${element.id}||${element.offerPrice} ");

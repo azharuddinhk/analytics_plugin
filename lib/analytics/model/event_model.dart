@@ -1,6 +1,6 @@
 enum AnalyticsPlaftorm { Android, iOS }
 
-class ItemModel {
+class AnalyticsItemModel {
   final int? id;
   final String? name;
   final double? offerPrice;
@@ -12,7 +12,7 @@ class ItemModel {
   final String? currency;
   final String? navKey;
 
-  ItemModel(
+  AnalyticsItemModel(
       {this.id,
       this.name,
       this.offerPrice,
@@ -25,10 +25,10 @@ class ItemModel {
       this.navKey});
 }
 
-class CartModel {
+class AnalyticsCartModel {
   final int? cartId;
   final String? shippingAddress;
-  final List<ItemModel>? items;
+  final List<AnalyticsItemModel>? items;
   final String? currency;
   final String? couponCode;
   final double? cartValue;
@@ -36,7 +36,7 @@ class CartModel {
   final String? paymentType;
   final double? shippingCharge;
 
-  CartModel(
+  AnalyticsCartModel(
       {this.cartId,
       this.shippingAddress,
       this.items,
@@ -48,10 +48,10 @@ class CartModel {
       this.shippingCharge});
 }
 
-class ItemEventModel {
+class AnalyticsItemEventModel {
   String? userId;
-  ItemModel itemModel;
-  ItemEventModel({required this.itemModel, this.userId});
+  AnalyticsItemModel analyticsItemModel;
+  AnalyticsItemEventModel({required this.analyticsItemModel, this.userId});
 }
 
 class AnalyticsUserModel {

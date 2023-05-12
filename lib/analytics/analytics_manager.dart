@@ -36,62 +36,62 @@ class AnalyticsManager {
     MoEngageManager.instance.resetUser();
   }
 
-  logSelectItemViewEvent(ItemModel itemModel) {
-    FirebaseEvent.instance.logSelectItemViewEvent(itemModel);
-    MoEngageManager.instance.logSelectItemViewEvent(itemModel);
+  logSelectItemViewEvent(AnalyticsItemModel analyticsItemModel) {
+    FirebaseEvent.instance.logSelectItemViewEvent(analyticsItemModel);
+    MoEngageManager.instance.logSelectItemViewEvent(analyticsItemModel);
   }
 
-  setProductListViewEvent(List<ItemModel> list) {
+  setProductListViewEvent(List<AnalyticsItemModel> list) {
     FirebaseEvent.instance.setProductListViewEvent(list);
     MoEngageManager.instance.setProductListViewEvent(list);
   }
 
-  logItemViewEvent(ItemEventModel eventModel) {
+  logItemViewEvent(AnalyticsItemEventModel eventModel) {
     FBEventManager.instance.viewItemEvent(eventModel);
-    FirebaseEvent.instance.logItemViewEvent(eventModel.itemModel);
-    MoEngageManager.instance.logItemViewEvent(eventModel.itemModel);
+    FirebaseEvent.instance.logItemViewEvent(eventModel.analyticsItemModel);
+    MoEngageManager.instance.logItemViewEvent(eventModel.analyticsItemModel);
   }
 
-  logAddToCart(ItemModel itemModel) {
-    FirebaseEvent.instance.logAddToCart(itemModel);
-    MoEngageManager.instance.logAddToCart(itemModel);
-    FBEventManager.instance.addToCart(itemModel);
+  logAddToCart(AnalyticsItemModel analyticsItemModel) {
+    FirebaseEvent.instance.logAddToCart(analyticsItemModel);
+    MoEngageManager.instance.logAddToCart(analyticsItemModel);
+    FBEventManager.instance.addToCart(analyticsItemModel);
   }
 
-  logRemoveFromCart(ItemModel itemModel) {
-    FirebaseEvent.instance.logRemoveFromCart(itemModel);
-    MoEngageManager.instance.logRemoveFromCart(itemModel);
+  logRemoveFromCart(AnalyticsItemModel analyticsItemModel) {
+    FirebaseEvent.instance.logRemoveFromCart(analyticsItemModel);
+    MoEngageManager.instance.logRemoveFromCart(analyticsItemModel);
   }
 
-  logAddToWishlist(ItemEventModel eventModel) {
-    FirebaseEvent.instance.logAddToWishlist(eventModel.itemModel);
-    MoEngageManager.instance.logAddToWishlist(eventModel.itemModel);
+  logAddToWishlist(AnalyticsItemEventModel eventModel) {
+    FirebaseEvent.instance.logAddToWishlist(eventModel.analyticsItemModel);
+    MoEngageManager.instance.logAddToWishlist(eventModel.analyticsItemModel);
     FBEventManager.instance.addToWishlist(eventModel);
   }
 
-  logViewCart(CartModel cartModel) {
-    FirebaseEvent.instance.logViewCart(cartModel);
-    MoEngageManager.instance.logViewCart(cartModel);
+  logViewCart(AnalyticsCartModel analyticsCartModel) {
+    FirebaseEvent.instance.logViewCart(analyticsCartModel);
+    MoEngageManager.instance.logViewCart(analyticsCartModel);
   }
 
-  logBeginCheckout(CartModel cartModel) {
-    FBEventManager.instance.initiateCheckout(cartModel);
-    FirebaseEvent.instance.logBeginCheckout(cartModel);
-    MoEngageManager.instance.logBeginCheckout(cartModel);
+  logBeginCheckout(AnalyticsCartModel analyticsCartModel) {
+    FBEventManager.instance.initiateCheckout(analyticsCartModel);
+    FirebaseEvent.instance.logBeginCheckout(analyticsCartModel);
+    MoEngageManager.instance.logBeginCheckout(analyticsCartModel);
   }
 
-  logAddShippingInfo(CartModel cartModel) {
-    FirebaseEvent.instance.logAddShippingInfo(cartModel);
-    MoEngageManager.instance.logAddShippingInfo(cartModel);
+  logAddShippingInfo(AnalyticsCartModel analyticsCartModel) {
+    FirebaseEvent.instance.logAddShippingInfo(analyticsCartModel);
+    MoEngageManager.instance.logAddShippingInfo(analyticsCartModel);
   }
 
-  logPurchase(CartModel cartModel) {
-    FBEventManager.instance.purchaseEvents(cartModel);
-    FirebaseEvent.instance.logPurchase(cartModel);
-    MoEngageManager.instance.logPurchase(cartModel);
+  logPurchase(AnalyticsCartModel analyticsCartModel) {
+    FBEventManager.instance.purchaseEvents(analyticsCartModel);
+    FirebaseEvent.instance.logPurchase(analyticsCartModel);
+    MoEngageManager.instance.logPurchase(analyticsCartModel);
   }
 
-  logAddPaymentInfo(CartModel cartModel) {
-    FirebaseEvent.instance.logAddPaymentInfo(cartModel);
+  logAddPaymentInfo(AnalyticsCartModel analyticsCartModel) {
+    FirebaseEvent.instance.logAddPaymentInfo(analyticsCartModel);
   }
 }

@@ -31,68 +31,68 @@ class FirebaseEvent {
     await analytics.logSignUp(signUpMethod: "phone");
   }
 
-  Future logSelectItemViewEvent(ItemModel itemModel) async {
+  Future logSelectItemViewEvent(AnalyticsItemModel analyticsItemModel) async {
     List<AnalyticsEventItem> items = [];
-    items.add(getAnalyticsEventItem(itemModel));
+    items.add(getAnalyticsEventItem(analyticsItemModel));
     await analytics.logSelectItem(
-        items: items, itemListName: itemModel.categoryName ?? "");
+        items: items, itemListName: analyticsItemModel.categoryName ?? "");
   }
 
-  Future setProductListViewEvent(List<ItemModel> list) async {
+  Future setProductListViewEvent(List<AnalyticsItemModel> list) async {
     final items = list.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logViewItemList(items: items, itemListName: "");
   }
 
-  Future logItemViewEvent(ItemModel itemModel) async {
-    final items = [itemModel].map((e) => getAnalyticsEventItem(e)).toList();
+  Future logItemViewEvent(AnalyticsItemModel analyticsItemModel) async {
+    final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logViewItem(
         items: items,
         currency: MoEventAttributes.currencyValue,
-        value: itemModel.offerPrice);
+        value: analyticsItemModel.offerPrice);
   }
 
-  Future logAddToCart(ItemModel itemModel) async {
-    final items = [itemModel].map((e) => getAnalyticsEventItem(e)).toList();
-    logItemViewEvent(itemModel);
+  Future logAddToCart(AnalyticsItemModel analyticsItemModel) async {
+    final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
+    logItemViewEvent(analyticsItemModel);
     await analytics.logAddToCart(
         items: items,
         currency: MoEventAttributes.currencyValue,
-        value: (itemModel.offerPrice ?? 0) * (itemModel.quantity ?? 1));
+        value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1));
   }
 
-  Future logRemoveFromCart(ItemModel itemModel) async {
-    final items = [itemModel].map((e) => getAnalyticsEventItem(e)).toList();
+  Future logRemoveFromCart(AnalyticsItemModel analyticsItemModel) async {
+    final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logRemoveFromCart(
         items: items,
         currency: MoEventAttributes.currencyValue,
-        value: (itemModel.offerPrice ?? 0) * (itemModel.quantity ?? 1));
+        value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1));
   }
 
-  Future logAddToWishlist(ItemModel itemModel) async {
-    final items = [itemModel].map((e) => getAnalyticsEventItem(e)).toList();
+  Future logAddToWishlist(AnalyticsItemModel analyticsItemModel) async {
+    final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logAddToWishlist(
         items: items,
-        currency: itemModel.currency,
-        value: (itemModel.offerPrice ?? 0) * (itemModel.quantity ?? 1));
+        currency: analyticsItemModel.currency,
+        value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1));
   }
 
-  Future logAddToWishlistVariant(ItemModel itemModel) async {
-    final items = [itemModel].map((e) => getAnalyticsEventItem(e)).toList();
+  Future logAddToWishlistVariant(AnalyticsItemModel analyticsItemModel) async {
+    final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logAddToWishlist(
       items: items,
       currency: MoEventAttributes.currencyValue,
-      value: (itemModel.offerPrice ?? 0) * (itemModel.quantity ?? 1),
+      value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1),
     );
   }
 
-  Future logViewCart(CartModel cartModel) async {
+  Future logViewCart(AnalyticsCartModel cartModel) async {
     final items =
         cartModel.items?.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logViewCart(
         items: items, currency: cartModel.currency, value: cartModel.cartValue);
   }
 
-  Future logBeginCheckout(CartModel cartModel) async {
+  Future logBeginCheckout(AnalyticsCartModel cartModel) async {
     final items =
         cartModel.items?.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logBeginCheckout(
@@ -102,7 +102,7 @@ class FirebaseEvent {
         value: cartModel.cartValue);
   }
 
-  Future logAddShippingInfo(CartModel cartModel) async {
+  Future logAddShippingInfo(AnalyticsCartModel cartModel) async {
     final items =
         cartModel.items?.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logAddShippingInfo(
@@ -113,7 +113,7 @@ class FirebaseEvent {
         value: cartModel.cartValue);
   }
 
-  Future logPurchase(CartModel cartModel) async {
+  Future logPurchase(AnalyticsCartModel cartModel) async {
     final items =
         cartModel.items?.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logPurchase(
@@ -128,7 +128,7 @@ class FirebaseEvent {
     );
   }
 
-  Future logAddPaymentInfo(CartModel cartModel) async {
+  Future logAddPaymentInfo(AnalyticsCartModel cartModel) async {
     final items =
         cartModel.items?.map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logAddPaymentInfo(
@@ -142,7 +142,7 @@ class FirebaseEvent {
 }
 
 extension FirebaseEventHelper on FirebaseEvent {
-  AnalyticsEventItem getAnalyticsEventItem(ItemModel product) {
+  AnalyticsEventItem getAnalyticsEventItem(AnalyticsItemModel product) {
     return AnalyticsEventItem(
         itemId: "${product.id ?? 0}",
         itemName: product.name ?? "",
