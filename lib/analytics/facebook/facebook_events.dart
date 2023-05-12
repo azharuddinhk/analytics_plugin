@@ -2,12 +2,12 @@ import 'package:analytics_plugin/analytics/constant/fb_event_attributes.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
 import 'package:analytics_plugin/utils/BLChannelInvocation.dart';
 
-class FBEventManager {
-  static FBEventManager _instance = FBEventManager._();
+class AnalyticsFBEventManager {
+  static AnalyticsFBEventManager _instance = AnalyticsFBEventManager._();
 
-  static FBEventManager get instance => _instance;
+  static AnalyticsFBEventManager get instance => _instance;
 
-  FBEventManager._();
+  AnalyticsFBEventManager._();
   
   logEvents(String name, Map<String, dynamic> attributes) {
     BLChannelInvocation.instance.recordFacebookEvents(attributes, name);

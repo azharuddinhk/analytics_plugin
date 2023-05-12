@@ -2,18 +2,18 @@ import 'package:analytics_plugin/analytics/constant/mo_event_attributes.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-class FirebaseEvent {
+class AnalyticsFirebaseEvent {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
-  static late FirebaseEvent firebaseEvent;
+  static late AnalyticsFirebaseEvent analyticsFirebaseEvent;
 
-  FirebaseEvent._privateConstructor();
+  AnalyticsFirebaseEvent._privateConstructor();
 
-  static final FirebaseEvent instance = FirebaseEvent._privateConstructor();
+  static final AnalyticsFirebaseEvent instance = AnalyticsFirebaseEvent._privateConstructor();
 
-  factory FirebaseEvent() {
+  factory AnalyticsFirebaseEvent() {
     return instance;
   }
 
@@ -47,7 +47,7 @@ class FirebaseEvent {
     final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logViewItem(
         items: items,
-        currency: MoEventAttributes.currencyValue,
+        currency: AnalyticsMoEventAttributes.currencyValue,
         value: analyticsItemModel.offerPrice);
   }
 
@@ -56,7 +56,7 @@ class FirebaseEvent {
     logItemViewEvent(analyticsItemModel);
     await analytics.logAddToCart(
         items: items,
-        currency: MoEventAttributes.currencyValue,
+        currency: AnalyticsMoEventAttributes.currencyValue,
         value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1));
   }
 
@@ -64,7 +64,7 @@ class FirebaseEvent {
     final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logRemoveFromCart(
         items: items,
-        currency: MoEventAttributes.currencyValue,
+        currency: AnalyticsMoEventAttributes.currencyValue,
         value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1));
   }
 
@@ -80,7 +80,7 @@ class FirebaseEvent {
     final items = [analyticsItemModel].map((e) => getAnalyticsEventItem(e)).toList();
     await analytics.logAddToWishlist(
       items: items,
-      currency: MoEventAttributes.currencyValue,
+      currency: AnalyticsMoEventAttributes.currencyValue,
       value: (analyticsItemModel.offerPrice ?? 0) * (analyticsItemModel.quantity ?? 1),
     );
   }
@@ -120,7 +120,7 @@ class FirebaseEvent {
       transactionId: cartModel.gatewayOrderId,
       affiliation: "",
       items: items,
-      currency: MoEventAttributes.currencyValue,
+      currency: AnalyticsMoEventAttributes.currencyValue,
       value: cartModel.cartValue,
       shipping: cartModel.shippingCharge,
       tax: 0,
@@ -141,7 +141,7 @@ class FirebaseEvent {
   }
 }
 
-extension FirebaseEventHelper on FirebaseEvent {
+extension AnalyticsFirebaseEventHelper on AnalyticsFirebaseEvent {
   AnalyticsEventItem getAnalyticsEventItem(AnalyticsItemModel product) {
     return AnalyticsEventItem(
         itemId: "${product.id ?? 0}",

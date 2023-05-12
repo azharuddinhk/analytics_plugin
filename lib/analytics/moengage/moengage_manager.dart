@@ -6,10 +6,10 @@ import 'package:moengage_flutter/model/app_status.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 import 'package:moengage_flutter/properties.dart';
 
-class MoEngageManager {
-  static MoEngageManager _instance = MoEngageManager._();
-  static MoEngageManager get instance => _instance;
-  MoEngageManager._();
+class AnalyticsMoEngageManager {
+  static AnalyticsMoEngageManager _instance = AnalyticsMoEngageManager._();
+  static AnalyticsMoEngageManager get instance => _instance;
+  AnalyticsMoEngageManager._();
   late MoEngageFlutter? _moEngagePlugin;
   late String _appVersion;
   late String _deviceName;
@@ -56,10 +56,10 @@ class MoEngageManager {
 
   void trackEvents(String eventName, MoEProperties properties) {
     if (_moEngagePlugin != null) {
-      properties.addAttribute(MoEventAttributes.platform, _platForm.toString());
-      properties.addAttribute(MoEventAttributes.version, _appVersion);
-      properties.addAttribute(MoEventAttributes.osVersion, _osVersion);
-      properties.addAttribute(MoEventAttributes.deviceName, _deviceName);
+      properties.addAttribute(AnalyticsMoEventAttributes.platform, _platForm.toString());
+      properties.addAttribute(AnalyticsMoEventAttributes.version, _appVersion);
+      properties.addAttribute(AnalyticsMoEventAttributes.osVersion, _osVersion);
+      properties.addAttribute(AnalyticsMoEventAttributes.deviceName, _deviceName);
       _moEngagePlugin!.trackEvent(eventName, properties);
     }
   }
@@ -68,7 +68,7 @@ class MoEngageManager {
     if (_moEngagePlugin != null) {
       List<String> items = getItemsFromList(listItems);
       MoEProperties properties = MoEProperties();
-      properties.addAttribute(MoEventAttributes.items, items);
+      properties.addAttribute(AnalyticsMoEventAttributes.items, items);
       trackEvents(MOEventNames.VIEW_ITEM, properties);
     }
   }
@@ -118,9 +118,9 @@ class MoEngageManager {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
       properties
-          .addAttribute(MoEventAttributes.items, items)
-          .addAttribute(MoEventAttributes.currency, "INR")
-          .addAttribute(MoEventAttributes.value, cartModel.cartValue);
+          .addAttribute(AnalyticsMoEventAttributes.items, items)
+          .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
+          .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue);
       trackEvents(MOEventNames.VIEW_CART, properties);
     }
   }
@@ -130,10 +130,10 @@ class MoEngageManager {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
       properties
-          .addAttribute(MoEventAttributes.items, items)
-          .addAttribute(MoEventAttributes.currency, "INR")
-          .addAttribute(MoEventAttributes.coupon, cartModel.couponCode ?? "")
-          .addAttribute(MoEventAttributes.value, cartModel.cartValue);
+          .addAttribute(AnalyticsMoEventAttributes.items, items)
+          .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
+          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue);
       trackEvents(MOEventNames.BEGIN_CHECKOUT, properties);
     }
   }
@@ -143,12 +143,12 @@ class MoEngageManager {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
       properties
-          .addAttribute(MoEventAttributes.items, items)
-          .addAttribute(MoEventAttributes.currency, "INR")
-          .addAttribute(MoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.items, items)
+          .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
+          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
           .addAttribute(
-              MoEventAttributes.shipping, cartModel.shippingAddress ?? "")
-          .addAttribute(MoEventAttributes.value, cartModel.cartValue);
+              AnalyticsMoEventAttributes.shipping, cartModel.shippingAddress ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue);
       trackEvents(MOEventNames.ADD_SHIPPING_INFO, properties);
     }
   }
@@ -158,28 +158,28 @@ class MoEngageManager {
       List<String> items = getItemsFromList(cartModel.items!);
       MoEProperties properties = MoEProperties();
       properties
-          .addAttribute(MoEventAttributes.items, items)
-          .addAttribute(MoEventAttributes.currency, "INR")
-          .addAttribute(MoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.items, items)
+          .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
+          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
           .addAttribute(
-              MoEventAttributes.shippingCharge, cartModel.shippingCharge)
-          .addAttribute(MoEventAttributes.value, cartModel.cartValue)
-          .addAttribute(MoEventAttributes.transaction_id, cartModel.cartValue);
+              AnalyticsMoEventAttributes.shippingCharge, cartModel.shippingCharge)
+          .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue)
+          .addAttribute(AnalyticsMoEventAttributes.transaction_id, cartModel.cartValue);
       trackEvents(MOEventNames.PURCHASE, properties);
     }
   }
 }
 
-extension MoEngageEventHelper on MoEngageManager {
+extension MoEngageEventHelper on AnalyticsMoEngageManager {
   MoEProperties getAnalyticsEventItem(AnalyticsItemModel product) {
     MoEProperties params = MoEProperties();
     params
-        .addAttribute(MoEventAttributes.item_id, "${product.id ?? 0}")
-        .addAttribute(MoEventAttributes.item_name, product.name ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_id, "${product.id ?? 0}")
+        .addAttribute(AnalyticsMoEventAttributes.item_name, product.name ?? "")
         .addAttribute(
-            MoEventAttributes.item_category, product.categoryName ?? "")
-        .addAttribute(MoEventAttributes.item_brand, product.brand ?? "")
-        .addAttribute(MoEventAttributes.price, product.offerPrice);
+            AnalyticsMoEventAttributes.item_category, product.categoryName ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.price, product.offerPrice);
     return params;
   }
 
@@ -187,13 +187,13 @@ extension MoEngageEventHelper on MoEngageManager {
       AnalyticsItemModel product, int quantity) {
     MoEProperties params = MoEProperties();
     params
-        .addAttribute(MoEventAttributes.item_id, "${product.id ?? 0}")
-        .addAttribute(MoEventAttributes.item_name, product.name ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_id, "${product.id ?? 0}")
+        .addAttribute(AnalyticsMoEventAttributes.item_name, product.name ?? "")
         .addAttribute(
-            MoEventAttributes.item_category, product.categoryName ?? "")
-        .addAttribute(MoEventAttributes.item_brand, product.brand ?? "")
-        .addAttribute(MoEventAttributes.quantity, quantity)
-        .addAttribute(MoEventAttributes.price, product.offerPrice);
+            AnalyticsMoEventAttributes.item_category, product.categoryName ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.quantity, quantity)
+        .addAttribute(AnalyticsMoEventAttributes.price, product.offerPrice);
     return params;
   }
 

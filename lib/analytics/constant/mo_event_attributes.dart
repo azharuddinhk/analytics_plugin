@@ -1,5 +1,5 @@
-class MoEventAttributes {
-  MoEventAttributes._();
+class AnalyticsMoEventAttributes {
+  AnalyticsMoEventAttributes._();
   static const currencyValue = "INR";
   static const items = "items";
   static const item_brand = "item_brand";
