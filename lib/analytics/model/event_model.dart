@@ -1,7 +1,7 @@
 enum AnalyticsPlaftorm { Android, iOS }
 
 class AnalyticsItemModel {
-  final int? id;
+  final String? id;
   final String? name;
   final double? offerPrice;
   final double? mrp;
