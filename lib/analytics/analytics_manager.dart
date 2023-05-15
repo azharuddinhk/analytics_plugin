@@ -8,89 +8,132 @@ class AnalyticsManager {
   static AnalyticsManager analytics = AnalyticsManager.instance;
   AnalyticsManager._privateConstructor();
   static final AnalyticsManager instance =
-      AnalyticsManager._privateConstructor();
+  AnalyticsManager._privateConstructor();
+  bool isMoengage = false;
+  bool isFirebase = false;
   factory AnalyticsManager() {
     return instance;
   }
 
-  void initializedMoEngage(MoEngageFlutter moPlugin, String appVersion,
-      String deviceName, String osVersion, AnalyticsPlaftorm platform) {
+  void initializedAnalytics(
+      MoEngageFlutter moPlugin,
+      String appVersion,
+      String deviceName,
+      String osVersion,
+      AnalyticsPlaftorm platform,
+      bool isMoengage,
+      bool isFirebase) {
+    isMoengage = isMoengage;
+    isFirebase = isFirebase;
     AnalyticsMoEngageManager.instance.initializedMoEngage(
         moPlugin, appVersion, deviceName, osVersion, platform);
   }
 
+  void setScreenViewEvents(String screenName) {
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.recordScreenView(screenName);
+  }
+
   void setAppInstallEvent() {
-    AnalyticsMoEngageManager.instance.setAppInstallEvent();
+    if (isMoengage) AnalyticsMoEngageManager.instance.setAppInstallEvent();
   }
 
   void setAppUpdateEvent() {
-    AnalyticsMoEngageManager.instance.setAppUpdateEvent();
+    if (isMoengage) AnalyticsMoEngageManager.instance.setAppUpdateEvent();
   }
 
   void setUserAttribute(AnalyticsUserModel userModel) {
-    AnalyticsMoEngageManager.instance.setUserAttribute(userModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.setUserAttribute(userModel);
   }
 
   void resetUser() {
-    AnalyticsMoEngageManager.instance.resetUser();
+    if (isMoengage) AnalyticsMoEngageManager.instance.resetUser();
   }
 
   logSelectItemViewEvent(AnalyticsItemModel analyticsItemModel) {
-    AnalyticsFirebaseEvent.instance.logSelectItemViewEvent(analyticsItemModel);
-    AnalyticsMoEngageManager.instance.logSelectItemViewEvent(analyticsItemModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance
+          .logSelectItemViewEvent(analyticsItemModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance
+          .logSelectItemViewEvent(analyticsItemModel);
   }
 
   setProductListViewEvent(List<AnalyticsItemModel> list) {
-    AnalyticsFirebaseEvent.instance.setProductListViewEvent(list);
-    AnalyticsMoEngageManager.instance.setProductListViewEvent(list);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.setProductListViewEvent(list);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.setProductListViewEvent(list);
   }
 
   logItemViewEvent(AnalyticsItemEventModel eventModel) {
     AnalyticsFBEventManager.instance.viewItemEvent(eventModel);
-    AnalyticsFirebaseEvent.instance.logItemViewEvent(eventModel.analyticsItemModel);
-    AnalyticsMoEngageManager.instance.logItemViewEvent(eventModel.analyticsItemModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance
+          .logItemViewEvent(eventModel.analyticsItemModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance
+          .logItemViewEvent(eventModel.analyticsItemModel);
   }
 
   logAddToCart(AnalyticsItemModel analyticsItemModel) {
-    AnalyticsFirebaseEvent.instance.logAddToCart(analyticsItemModel);
-    AnalyticsMoEngageManager.instance.logAddToCart(analyticsItemModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logAddToCart(analyticsItemModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logAddToCart(analyticsItemModel);
     AnalyticsFBEventManager.instance.addToCart(analyticsItemModel);
   }
 
   logRemoveFromCart(AnalyticsItemModel analyticsItemModel) {
-    AnalyticsFirebaseEvent.instance.logRemoveFromCart(analyticsItemModel);
-    AnalyticsMoEngageManager.instance.logRemoveFromCart(analyticsItemModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logRemoveFromCart(analyticsItemModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logRemoveFromCart(analyticsItemModel);
   }
 
   logAddToWishlist(AnalyticsItemEventModel eventModel) {
-    AnalyticsFirebaseEvent.instance.logAddToWishlist(eventModel.analyticsItemModel);
-    AnalyticsMoEngageManager.instance.logAddToWishlist(eventModel.analyticsItemModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance
+          .logAddToWishlist(eventModel.analyticsItemModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance
+          .logAddToWishlist(eventModel.analyticsItemModel);
     AnalyticsFBEventManager.instance.addToWishlist(eventModel);
   }
 
   logViewCart(AnalyticsCartModel analyticsCartModel) {
-    AnalyticsFirebaseEvent.instance.logViewCart(analyticsCartModel);
-    AnalyticsMoEngageManager.instance.logViewCart(analyticsCartModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logViewCart(analyticsCartModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logViewCart(analyticsCartModel);
   }
 
   logBeginCheckout(AnalyticsCartModel analyticsCartModel) {
     AnalyticsFBEventManager.instance.initiateCheckout(analyticsCartModel);
-    AnalyticsFirebaseEvent.instance.logBeginCheckout(analyticsCartModel);
-    AnalyticsMoEngageManager.instance.logBeginCheckout(analyticsCartModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logBeginCheckout(analyticsCartModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logBeginCheckout(analyticsCartModel);
   }
 
   logAddShippingInfo(AnalyticsCartModel analyticsCartModel) {
-    AnalyticsFirebaseEvent.instance.logAddShippingInfo(analyticsCartModel);
-    AnalyticsMoEngageManager.instance.logAddShippingInfo(analyticsCartModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logAddShippingInfo(analyticsCartModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logAddShippingInfo(analyticsCartModel);
   }
 
   logPurchase(AnalyticsCartModel analyticsCartModel) {
     AnalyticsFBEventManager.instance.purchaseEvents(analyticsCartModel);
-    AnalyticsFirebaseEvent.instance.logPurchase(analyticsCartModel);
-    AnalyticsMoEngageManager.instance.logPurchase(analyticsCartModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logPurchase(analyticsCartModel);
+    if (isMoengage)
+      AnalyticsMoEngageManager.instance.logPurchase(analyticsCartModel);
   }
 
   logAddPaymentInfo(AnalyticsCartModel analyticsCartModel) {
-    AnalyticsFirebaseEvent.instance.logAddPaymentInfo(analyticsCartModel);
+    if (isFirebase)
+      AnalyticsFirebaseEvent.instance.logAddPaymentInfo(analyticsCartModel);
   }
 }
