@@ -1,7 +1,7 @@
-import 'package:analytics_plugin/analytics/facebook/facebook_events.dart';
-import 'package:analytics_plugin/analytics/firebase/firebase_events.dart';
+import 'package:analytics_plugin/analytics/facebook/analytics_facebook_events.dart';
+import 'package:analytics_plugin/analytics/firebase/analytics_firebase_events.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
-import 'package:analytics_plugin/analytics/moengage/moengage_manager.dart';
+import 'package:analytics_plugin/analytics/moengage/analytics_moengage_manager.dart';
 import 'package:moengage_flutter/moengage_flutter.dart';
 
 class AnalyticsManager {
