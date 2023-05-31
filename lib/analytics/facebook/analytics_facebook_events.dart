@@ -1,16 +1,31 @@
 import 'package:analytics_plugin/analytics/constant/fb_event_attributes.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
-import 'package:analytics_plugin/utils/BLChannelInvocation.dart';
+import 'package:flutter/services.dart';
 
 class AnalyticsFBEventManager {
-  static AnalyticsFBEventManager _instance = AnalyticsFBEventManager._();
+  static final AnalyticsFBEventManager _instance = AnalyticsFBEventManager._();
 
   static AnalyticsFBEventManager get instance => _instance;
 
   AnalyticsFBEventManager._();
-  
+
+  Future<void> Function(Map<dynamic, dynamic>)? recordFacebookEvent;
+
+  Future<bool> _recordFacebookEvents(
+      Map<String, dynamic> eventParams, String eventName) async {
+    try {
+      Map<dynamic, dynamic> arguments = {};
+      arguments['eventName'] = eventName;
+      arguments['eventAttribute'] = eventParams;
+      await recordFacebookEvent!(arguments);
+      return true;
+    } on PlatformException catch (e) {
+      return false;
+    }
+  }
+
   logEvents(String name, Map<String, dynamic> attributes) {
-    BLChannelInvocation.instance.recordFacebookEvents(attributes, name);
+    _recordFacebookEvents(attributes, name);
   }
 
   addToCart(AnalyticsItemModel AnalyticsItemModel) {
@@ -38,8 +53,7 @@ class AnalyticsFBEventManager {
         AnalyticsItemModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         AnalyticsItemModel.offerPrice ?? 0.0;
-    BLChannelInvocation.instance
-        .recordFacebookEvents(fbParams, FBEventName.eventNameAddedToCart);
+        _recordFacebookEvents(fbParams, FBEventName.eventNameAddedToCart);
   }
 
   addToWishlist(AnalyticsItemEventModel eventModel) {
@@ -69,8 +83,7 @@ class AnalyticsFBEventManager {
         eventModel.analyticsItemModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         eventModel.analyticsItemModel.offerPrice ?? 0.0;
-    BLChannelInvocation.instance
-        .recordFacebookEvents(fbParams, FBEventName.eventNameAddedToWishlist);
+    _recordFacebookEvents(fbParams, FBEventName.eventNameAddedToWishlist);
   }
 
   initiateCheckout(AnalyticsCartModel cartModel) {
@@ -81,8 +94,7 @@ class AnalyticsFBEventManager {
         cartModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
        cartModel.cartValue ?? 0.0;
-    BLChannelInvocation.instance
-        .recordFacebookEvents(fbParams, FBEventName.eventNameInitiatedCheckout);
+    _recordFacebookEvents(fbParams, FBEventName.eventNameInitiatedCheckout);
   }
 
   purchaseEvents(AnalyticsCartModel cartModel) {
@@ -93,7 +105,7 @@ class AnalyticsFBEventManager {
         cartModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         cartModel.cartValue ?? 0.0;
-    BLChannelInvocation.instance.recordFacebookEvents(fbParams, "Purchase");
+    _recordFacebookEvents(fbParams, "Purchase");
   }
 
   viewItemEvent(AnalyticsItemEventModel eventModel) {
@@ -123,7 +135,6 @@ class AnalyticsFBEventManager {
         eventModel.analyticsItemModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         eventModel.analyticsItemModel.offerPrice ?? 0.0;
-    BLChannelInvocation.instance
-        .recordFacebookEvents(fbParams, FBEventName.eventNameViewedContent);
+     _recordFacebookEvents(fbParams, FBEventName.eventNameViewedContent);
   }
 }
