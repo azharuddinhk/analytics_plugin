@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:analytics_plugin/analytics/constant/mo_event_attributes.dart';
 import 'package:analytics_plugin/analytics/constant/mo_event_names.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
@@ -56,10 +55,12 @@ class AnalyticsMoEngageManager {
 
   void trackEvents(String eventName, MoEProperties properties) {
     if (_moEngagePlugin != null) {
-      properties.addAttribute(AnalyticsMoEventAttributes.platform, _platForm.toString());
+      properties.addAttribute(
+          AnalyticsMoEventAttributes.platform, _platForm.toString());
       properties.addAttribute(AnalyticsMoEventAttributes.version, _appVersion);
       properties.addAttribute(AnalyticsMoEventAttributes.osVersion, _osVersion);
-      properties.addAttribute(AnalyticsMoEventAttributes.deviceName, _deviceName);
+      properties.addAttribute(
+          AnalyticsMoEventAttributes.deviceName, _deviceName);
       _moEngagePlugin!.trackEvent(eventName, properties);
     }
   }
@@ -132,7 +133,8 @@ class AnalyticsMoEngageManager {
       properties
           .addAttribute(AnalyticsMoEventAttributes.items, items)
           .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
-          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(
+              AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
           .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue);
       trackEvents(MOEventNames.BEGIN_CHECKOUT, properties);
     }
@@ -145,9 +147,10 @@ class AnalyticsMoEngageManager {
       properties
           .addAttribute(AnalyticsMoEventAttributes.items, items)
           .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
-          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
           .addAttribute(
-              AnalyticsMoEventAttributes.shipping, cartModel.shippingAddress ?? "")
+              AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.shipping,
+              cartModel.shippingAddress ?? "")
           .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue);
       trackEvents(MOEventNames.ADD_SHIPPING_INFO, properties);
     }
@@ -160,11 +163,13 @@ class AnalyticsMoEngageManager {
       properties
           .addAttribute(AnalyticsMoEventAttributes.items, items)
           .addAttribute(AnalyticsMoEventAttributes.currency, "INR")
-          .addAttribute(AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
           .addAttribute(
-              AnalyticsMoEventAttributes.shippingCharge, cartModel.shippingCharge)
+              AnalyticsMoEventAttributes.coupon, cartModel.couponCode ?? "")
+          .addAttribute(AnalyticsMoEventAttributes.shippingCharge,
+              cartModel.shippingCharge)
           .addAttribute(AnalyticsMoEventAttributes.value, cartModel.cartValue)
-          .addAttribute(AnalyticsMoEventAttributes.transaction_id, cartModel.cartValue);
+          .addAttribute(
+              AnalyticsMoEventAttributes.transaction_id, cartModel.cartValue);
       trackEvents(MOEventNames.PURCHASE, properties);
     }
   }
@@ -176,9 +181,10 @@ extension MoEngageEventHelper on AnalyticsMoEngageManager {
     params
         .addAttribute(AnalyticsMoEventAttributes.item_id, "${product.id ?? 0}")
         .addAttribute(AnalyticsMoEventAttributes.item_name, product.name ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_category,
+            product.categoryName ?? "")
         .addAttribute(
-            AnalyticsMoEventAttributes.item_category, product.categoryName ?? "")
-        .addAttribute(AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
+            AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
         .addAttribute(AnalyticsMoEventAttributes.price, product.offerPrice);
     return params;
   }
@@ -189,9 +195,10 @@ extension MoEngageEventHelper on AnalyticsMoEngageManager {
     params
         .addAttribute(AnalyticsMoEventAttributes.item_id, "${product.id ?? 0}")
         .addAttribute(AnalyticsMoEventAttributes.item_name, product.name ?? "")
+        .addAttribute(AnalyticsMoEventAttributes.item_category,
+            product.categoryName ?? "")
         .addAttribute(
-            AnalyticsMoEventAttributes.item_category, product.categoryName ?? "")
-        .addAttribute(AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
+            AnalyticsMoEventAttributes.item_brand, product.brand ?? "")
         .addAttribute(AnalyticsMoEventAttributes.quantity, quantity)
         .addAttribute(AnalyticsMoEventAttributes.price, product.offerPrice);
     return params;

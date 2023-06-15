@@ -6,6 +6,7 @@ class AWSEventNames {
   static const PRODUCT_REVIEWED = "Product Reviewed";
   static const CHEKOUT_STARTED = "Checkout Started";
   static const ORDER_COMPLETED = "Order Completed";
+  static const ORDER_CANCELLED = "Order Cancelled";
   static const ORDER_REFENDED = "Order Refunded";
   static const PRODUCT_SEARCH = "Products Searched";
   static const PRODUCT_SHARED = "Product Shared";

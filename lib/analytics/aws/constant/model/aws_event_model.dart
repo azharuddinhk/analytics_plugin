@@ -1,3 +1,6 @@
+import 'package:analytics_plugin/analytics/model/event_model.dart';
+import 'package:moengage_flutter/moengage_flutter.dart';
+
 enum AWSAnalyticsPlaftorm { Android, Apple }
 
 class AWSAnalyticsItemModel {
@@ -133,4 +136,33 @@ class AWSAnalyticsTrackerModel {
     searchAction = searchAction;
     searchKeyword = searchKeyword;
   }
+}
+
+class EcomAnalyticsConfigModel {
+  final MoEngageFlutter moPlugin;
+  final String appVersion;
+  final String deviceName;
+  final String osVersion;
+  final AnalyticsPlaftorm platform;
+  final bool isMoengage;
+  final bool isBranch;
+  final bool isFacebook;
+  final bool isFirebase;
+  final bool isRudderStack;
+  final String writeKey;
+  final String dataPlaneUrl;
+
+  EcomAnalyticsConfigModel(
+      {required this.moPlugin,
+      required this.appVersion,
+      required this.deviceName,
+      required this.osVersion,
+      required this.platform,
+      this.isMoengage = false,
+      this.isBranch = false,
+      this.isFacebook = false,
+      this.isFirebase = false,
+      this.isRudderStack = false,
+      this.writeKey = "",
+      this.dataPlaneUrl = ""});
 }

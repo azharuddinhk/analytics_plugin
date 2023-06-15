@@ -13,8 +13,9 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  firebase_analytics: ^10.0.5
+  firebase_analytics: ^10.4.2
   moengage_flutter: ^5.1.0
+  flutter_branch_sdk: ^6.4.0
 
 dev_dependencies:
   flutter_test:

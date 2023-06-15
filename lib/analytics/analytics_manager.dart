@@ -1,139 +1,258 @@
+import 'package:analytics_plugin/analytics/aws/constant/aws_event_name.dart';
+import 'package:analytics_plugin/analytics/branch/analytics_branch_event.dart';
 import 'package:analytics_plugin/analytics/facebook/analytics_facebook_events.dart';
 import 'package:analytics_plugin/analytics/firebase/analytics_firebase_events.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
 import 'package:analytics_plugin/analytics/moengage/analytics_moengage_manager.dart';
-import 'package:moengage_flutter/moengage_flutter.dart';
+import 'package:analytics_plugin/analytics/rudderstack/rudder_stack_manager.dart';
+
+import 'aws/constant/model/aws_event_model.dart';
 
 class AnalyticsManager {
   static AnalyticsManager analytics = AnalyticsManager.instance;
   AnalyticsManager._privateConstructor();
   static final AnalyticsManager instance =
-  AnalyticsManager._privateConstructor();
-  bool isMoengage = false;
-  bool isFirebase = false;
+      AnalyticsManager._privateConstructor();
+  late EcomAnalyticsConfigModel ecomAnalyticsConfigModel;
   factory AnalyticsManager() {
     return instance;
   }
 
-  void initializedAnalytics(
-      MoEngageFlutter moPlugin,
-      String appVersion,
-      String deviceName,
-      String osVersion,
-      AnalyticsPlaftorm platform,
-      bool isMoengage,
-      bool isFirebase) {
-    isMoengage = isMoengage;
-    isFirebase = isFirebase;
-    AnalyticsMoEngageManager.instance.initializedMoEngage(
-        moPlugin, appVersion, deviceName, osVersion, platform);
+  void initializedAnalytics(EcomAnalyticsConfigModel ecomAnalyticsConfigModel) {
+    ecomAnalyticsConfigModel = ecomAnalyticsConfigModel;
+    if (ecomAnalyticsConfigModel.isMoengage) {
+      AnalyticsMoEngageManager.instance.initializedMoEngage(
+          ecomAnalyticsConfigModel.moPlugin,
+          ecomAnalyticsConfigModel.appVersion,
+          ecomAnalyticsConfigModel.deviceName,
+          ecomAnalyticsConfigModel.osVersion,
+          ecomAnalyticsConfigModel.platform);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.initialisedRudderClient(
+          ecomAnalyticsConfigModel.writeKey,
+          ecomAnalyticsConfigModel.dataPlaneUrl);
+    }
   }
 
   void setScreenViewEvents(String screenName) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.recordScreenView(screenName);
+    }
   }
 
   void setAppInstallEvent() {
-    if (isMoengage) AnalyticsMoEngageManager.instance.setAppInstallEvent();
+    if (ecomAnalyticsConfigModel.isMoengage) {
+      AnalyticsMoEngageManager.instance.setAppInstallEvent();
+    }
   }
 
   void setAppUpdateEvent() {
-    if (isMoengage) AnalyticsMoEngageManager.instance.setAppUpdateEvent();
+    if (ecomAnalyticsConfigModel.isMoengage) {
+      AnalyticsMoEngageManager.instance.setAppUpdateEvent();
+    }
   }
 
   void setUserAttribute(AnalyticsUserModel userModel) {
-    if (isMoengage)
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.setUserAttribute(userModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.registerUser(userModel);
+    }
   }
 
   void resetUser() {
-    if (isMoengage) AnalyticsMoEngageManager.instance.resetUser();
+    if (ecomAnalyticsConfigModel.isMoengage) {
+      AnalyticsMoEngageManager.instance.resetUser();
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.resetUser();
+    }
   }
 
   logSelectItemViewEvent(AnalyticsItemModel analyticsItemModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance
           .logSelectItemViewEvent(analyticsItemModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance
           .logSelectItemViewEvent(analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance
+          .setProductEvent(AWSEventNames.PRODUCT_CLICKED, analyticsItemModel);
+    }
   }
 
   setProductListViewEvent(List<AnalyticsItemModel> list) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.setProductListViewEvent(list);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.setProductListViewEvent(list);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.setProductListViewEvent(list);
+    }
   }
 
   logItemViewEvent(AnalyticsItemEventModel eventModel) {
-    AnalyticsFBEventManager.instance.viewItemEvent(eventModel);
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFacebook) {
+      AnalyticsFBEventManager.instance.viewItemEvent(eventModel);
+    }
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance
           .logItemViewEvent(eventModel.analyticsItemModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance
           .logItemViewEvent(eventModel.analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.setProductEvent(
+          AWSEventNames.PRODUCT_VIEWED, eventModel.analyticsItemModel);
+    }
   }
 
   logAddToCart(AnalyticsItemModel analyticsItemModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logAddToCart(analyticsItemModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logAddToCart(analyticsItemModel);
-    AnalyticsFBEventManager.instance.addToCart(analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isBranch) {
+      AnalyticsBranchEvent.instance.logAddToCart(analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isFacebook) {
+      AnalyticsFBEventManager.instance.addToCart(analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance
+          .setProductEvent(AWSEventNames.PRODUCT_ADDED, analyticsItemModel);
+    }
   }
 
   logRemoveFromCart(AnalyticsItemModel analyticsItemModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logRemoveFromCart(analyticsItemModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logRemoveFromCart(analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance
+          .setProductEvent(AWSEventNames.PRODUCT_REMOVED, analyticsItemModel);
+    }
   }
 
   logAddToWishlist(AnalyticsItemEventModel eventModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance
           .logAddToWishlist(eventModel.analyticsItemModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance
           .logAddToWishlist(eventModel.analyticsItemModel);
-    AnalyticsFBEventManager.instance.addToWishlist(eventModel);
+    }
+    if (ecomAnalyticsConfigModel.isBranch) {
+      AnalyticsBranchEvent.instance
+          .logAddToWishlistVariant(eventModel.analyticsItemModel);
+    }
+    if (ecomAnalyticsConfigModel.isFacebook) {
+      AnalyticsFBEventManager.instance.addToWishlist(eventModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.setProductEvent(
+          AWSEventNames.PRODUCT_ADDED_TO_WISHLIST,
+          eventModel.analyticsItemModel);
+    }
   }
 
   logViewCart(AnalyticsCartModel analyticsCartModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logViewCart(analyticsCartModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logViewCart(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isBranch) {
+      AnalyticsBranchEvent.instance.logViewCart(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.setCartViewEvent(analyticsCartModel);
+    }
   }
 
   logBeginCheckout(AnalyticsCartModel analyticsCartModel) {
-    AnalyticsFBEventManager.instance.initiateCheckout(analyticsCartModel);
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFacebook) {
+      AnalyticsFBEventManager.instance.initiateCheckout(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logBeginCheckout(analyticsCartModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logBeginCheckout(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isBranch) {
+      AnalyticsBranchEvent.instance.logBeginCheckout(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.checkoutStartedEvent(analyticsCartModel);
+    }
   }
 
   logAddShippingInfo(AnalyticsCartModel analyticsCartModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logAddShippingInfo(analyticsCartModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logAddShippingInfo(analyticsCartModel);
+    }
   }
 
   logPurchase(AnalyticsCartModel analyticsCartModel) {
-    AnalyticsFBEventManager.instance.purchaseEvents(analyticsCartModel);
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFacebook) {
+      AnalyticsFBEventManager.instance.purchaseEvents(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logPurchase(analyticsCartModel);
-    if (isMoengage)
+    }
+    if (ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.logPurchase(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isBranch) {
+      AnalyticsBranchEvent.instance.logPurchase(analyticsCartModel);
+    }
+    if (ecomAnalyticsConfigModel.isRudderStack) {
+      RudderStackManager.instance.submitPurchaseEvent(analyticsCartModel);
+    }
   }
 
   logAddPaymentInfo(AnalyticsCartModel analyticsCartModel) {
-    if (isFirebase)
+    if (ecomAnalyticsConfigModel.isFirebase) {
       AnalyticsFirebaseEvent.instance.logAddPaymentInfo(analyticsCartModel);
+    }
+  }
+
+  setSingleAttributeEvent(
+      {required String eventName, required String key, required String value}) {
+    RudderStackManager.instance
+        .setSingleAttributeEvent(eventName: eventName, key: key, value: value);
+  }
+
+  setEventWithAttributes(String eventName, Map<String, dynamic> attributes) {
+    RudderStackManager.instance.setEventWithAttributes(eventName, attributes);
+  }
+
+  setOrderCancelEvent(AnalyticsCartModel cartModel) {
+    RudderStackManager.instance.orderCancelEvent(cartModel);
+  }
+
+  submitProductReview(int productId, String reviewDescription, int rating) {
+    RudderStackManager.instance
+        .submitProductReview(productId, reviewDescription, rating);
   }
 }

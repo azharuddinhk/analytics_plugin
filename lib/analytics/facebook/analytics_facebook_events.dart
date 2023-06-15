@@ -1,6 +1,6 @@
 import 'package:analytics_plugin/analytics/constant/fb_event_attributes.dart';
 import 'package:analytics_plugin/analytics/model/event_model.dart';
-import 'package:flutter/services.dart';
+import 'package:analytics_plugin/analytics_plugin_method_channel.dart';
 
 class AnalyticsFBEventManager {
   static final AnalyticsFBEventManager _instance = AnalyticsFBEventManager._();
@@ -11,17 +11,9 @@ class AnalyticsFBEventManager {
 
   Future<void> Function(Map<dynamic, dynamic>)? recordFacebookEvent;
 
-  Future<bool> _recordFacebookEvents(
-      Map<String, dynamic> eventParams, String eventName) async {
-    try {
-      Map<dynamic, dynamic> arguments = {};
-      arguments['eventName'] = eventName;
-      arguments['eventAttribute'] = eventParams;
-      await recordFacebookEvent!(arguments);
-      return true;
-    } on PlatformException catch (e) {
-      return false;
-    }
+  _recordFacebookEvents(Map<String, dynamic> eventParams, String eventName) {
+    MethodChannelAnalyticsPlugin.instance
+        .recordFacebookEvents(eventName, eventParams);
   }
 
   logEvents(String name, Map<String, dynamic> attributes) {
@@ -32,8 +24,8 @@ class AnalyticsFBEventManager {
     final navKey = AnalyticsItemModel.navKey ?? "";
     final itemName = AnalyticsItemModel.name ?? "";
     final brandName = AnalyticsItemModel.brand ?? "";
-    final itemCategory = AnalyticsItemModel.categoryName?? "";
-    var contentParams = Map<String, dynamic>();
+    final itemCategory = AnalyticsItemModel.categoryName ?? "";
+    var contentParams = <String, dynamic>{};
     contentParams = {
       "Product Name": itemName,
       "Brand Name": brandName,
@@ -44,16 +36,15 @@ class AnalyticsFBEventManager {
       "item_id": AnalyticsItemModel.id ?? 0,
     };
 
-    Map<String, dynamic> fbParams = Map();
+    Map<String, dynamic> fbParams = {};
     fbParams[FBEventAttributes.paramNameContent] = contentParams;
     fbParams[FBEventAttributes.paramNameContentId] = navKey;
     fbParams[FBEventAttributes.paramNameContentType] =
         navKey.contains("PA-") ? "pack" : "product";
-    fbParams[FBEventAttributes.paramNameCurrency] =
-        AnalyticsItemModel.currency;
+    fbParams[FBEventAttributes.paramNameCurrency] = AnalyticsItemModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         AnalyticsItemModel.offerPrice ?? 0.0;
-        _recordFacebookEvents(fbParams, FBEventName.eventNameAddedToCart);
+    _recordFacebookEvents(fbParams, FBEventName.eventNameAddedToCart);
   }
 
   addToWishlist(AnalyticsItemEventModel eventModel) {
@@ -62,7 +53,7 @@ class AnalyticsFBEventManager {
     final brandName = eventModel.analyticsItemModel.brand ?? "";
     final itemCategory = eventModel.analyticsItemModel.categoryName ?? "";
     final id = eventModel.analyticsItemModel.id ?? 0;
-    var contentParams = Map<String, dynamic>();
+    var contentParams = <String, dynamic>{};
     contentParams = {
       "Product Name": itemName,
       "Brand Name": brandName,
@@ -74,7 +65,7 @@ class AnalyticsFBEventManager {
       "user_id": eventModel.userId,
     };
 
-    Map<String, dynamic> fbParams = Map();
+    Map<String, dynamic> fbParams = {};
     fbParams[FBEventAttributes.paramNameContent] = contentParams;
     fbParams[FBEventAttributes.paramNameContentId] = navKey;
     fbParams[FBEventAttributes.paramNameContentType] =
@@ -87,22 +78,20 @@ class AnalyticsFBEventManager {
   }
 
   initiateCheckout(AnalyticsCartModel cartModel) {
-    Map<String, dynamic> fbParams = Map();
+    Map<String, dynamic> fbParams = {};
     fbParams[FBEventAttributes.paramNameNumItems] =
-        (cartModel.items?.length ?? 0) ;
-    fbParams[FBEventAttributes.paramNameCurrency] =
-        cartModel.currency;
+        (cartModel.items?.length ?? 0);
+    fbParams[FBEventAttributes.paramNameCurrency] = cartModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
-       cartModel.cartValue ?? 0.0;
+        cartModel.cartValue ?? 0.0;
     _recordFacebookEvents(fbParams, FBEventName.eventNameInitiatedCheckout);
   }
 
   purchaseEvents(AnalyticsCartModel cartModel) {
-    var fbParams = Map<String, dynamic>();
+    var fbParams = <String, dynamic>{};
     fbParams[FBEventAttributes.paramNameNumItems] =
         (cartModel.items?.length ?? 0);
-    fbParams[FBEventAttributes.paramNameCurrency] =
-        cartModel.currency;
+    fbParams[FBEventAttributes.paramNameCurrency] = cartModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         cartModel.cartValue ?? 0.0;
     _recordFacebookEvents(fbParams, "Purchase");
@@ -115,7 +104,7 @@ class AnalyticsFBEventManager {
     final itemCategory = eventModel.analyticsItemModel.categoryName ?? "";
     final id = eventModel.analyticsItemModel.id ?? 0;
 
-    var contentParams = Map<String, dynamic>();
+    var contentParams = <String, dynamic>{};
     contentParams = {
       "Product Name": itemName,
       "Brand Name": brandName,
@@ -126,7 +115,7 @@ class AnalyticsFBEventManager {
       "item_id": id,
       "user_id": eventModel.userId,
     };
-    Map<String, dynamic> fbParams = Map();
+    Map<String, dynamic> fbParams = {};
     fbParams[FBEventAttributes.paramNameContent] = contentParams;
     fbParams[FBEventAttributes.paramNameContentId] = navKey;
     fbParams[FBEventAttributes.paramNameContentType] =
@@ -135,6 +124,6 @@ class AnalyticsFBEventManager {
         eventModel.analyticsItemModel.currency;
     fbParams[FBEventAttributes.paramNameValueToSum] =
         eventModel.analyticsItemModel.offerPrice ?? 0.0;
-     _recordFacebookEvents(fbParams, FBEventName.eventNameViewedContent);
+    _recordFacebookEvents(fbParams, FBEventName.eventNameViewedContent);
   }
 }
