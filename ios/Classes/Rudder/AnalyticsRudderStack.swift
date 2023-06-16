@@ -7,7 +7,7 @@
 
 import Foundation
 import Rudder
-import RudderBranch
+// import RudderBranch
 
 class AnalyticsRudderStack{
     static let shareInstance: AnalyticsRudderStack = AnalyticsRudderStack()
@@ -21,7 +21,7 @@ class AnalyticsRudderStack{
                   .recordScreenViews(true)
         
         RSClient.sharedInstance().configure(with: config)
-        RSClient.sharedInstance().addDestination(RudderBranchDestination())
+//         RSClient.sharedInstance().addDestination(RudderBranchDestination())
 
     }
     

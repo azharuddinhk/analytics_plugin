@@ -20,7 +20,7 @@ A new Flutter project.
   s.dependency 'FBSDKCoreKit'
   s.dependency 'Rudder', '~> 2.0.1'
   #s.dependency 'RudderFirebase', '~> 1.0.0'
-  s.dependency 'RudderBranch', '~> 1.0.0'
+  #s.dependency 'RudderBranch', '~> 1.0.0'
   s.platform = :ios, '13.0'
 
   # Flutter.framework does not contain a i386 slice.
