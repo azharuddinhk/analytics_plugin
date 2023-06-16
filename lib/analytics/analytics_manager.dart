@@ -19,19 +19,19 @@ class AnalyticsManager {
   }
 
   void initializedAnalytics(EcomAnalyticsConfigModel ecomAnalyticsConfigModel) {
-    ecomAnalyticsConfigModel = ecomAnalyticsConfigModel;
-    if (ecomAnalyticsConfigModel.isMoengage) {
+    this.ecomAnalyticsConfigModel = ecomAnalyticsConfigModel;
+    if (this.ecomAnalyticsConfigModel.isMoengage) {
       AnalyticsMoEngageManager.instance.initializedMoEngage(
-          ecomAnalyticsConfigModel.moPlugin,
-          ecomAnalyticsConfigModel.appVersion,
-          ecomAnalyticsConfigModel.deviceName,
-          ecomAnalyticsConfigModel.osVersion,
-          ecomAnalyticsConfigModel.platform);
+          this.ecomAnalyticsConfigModel.moPlugin,
+          this.ecomAnalyticsConfigModel.appVersion,
+          this.ecomAnalyticsConfigModel.deviceName,
+          this.ecomAnalyticsConfigModel.osVersion,
+          this.ecomAnalyticsConfigModel.platform);
     }
-    if (ecomAnalyticsConfigModel.isRudderStack) {
+    if (this.ecomAnalyticsConfigModel.isRudderStack) {
       RudderStackManager.instance.initialisedRudderClient(
-          ecomAnalyticsConfigModel.writeKey,
-          ecomAnalyticsConfigModel.dataPlaneUrl);
+          this.ecomAnalyticsConfigModel.writeKey,
+          this.ecomAnalyticsConfigModel.dataPlaneUrl);
     }
   }
 
